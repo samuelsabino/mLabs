@@ -1,0 +1,27 @@
+version: '2.1'
+services:
+  db:
+    container_name: DB-SERVER
+    image: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./data/db:/data/db
+
+  app:
+    container_name: BACKEND-SERVER
+    image: mlabs-challenge
+    build: '.'
+    env_file: .env
+    depends_on:
+      - db
+    links:
+      - db
+    ports:
+      - '8080:8080'
+    working_dir: /app/mLabs
+    volumes: 
+      - /app/mLabs/node_modules
+      - ./src:/app/mLabs/src
+      - ./:/app/mLabs/
+      - ./src/test:/app/mLabs/src/test

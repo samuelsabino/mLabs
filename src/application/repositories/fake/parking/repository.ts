@@ -1,18 +1,15 @@
 import { Parking } from '../../../../application/domain/models';
 import { IParkingRepository } from '../../../../application/domain/repositories';
-import { RepositoryError } from '../../../../application/errors/repositories';
+import { ParkingRepositoryError } from '../../../../application/errors/repositories';
 
-export class FakeParkingRepository implements IParkingRepository {
-  private parkings: Parking[] = [];
+const parkings: Parking[] = [];
 
-  constructor() {
-    console.log(this.parkings);
-  }
+export const fakeParkingRepository: IParkingRepository = {
   async create(data: Pick<Parking, 'plate'>) {
-    const alreadyExists = this.parkings.find((parking) => parking.plate === data.plate);
-    if (alreadyExists) return RepositoryError.alreadyExists();
+    const alreadyExists = parkings.find((parking) => parking.plate === data.plate);
+    if (alreadyExists) return ParkingRepositoryError.alreadyExists();
 
-    const parkingsLength = this.parkings.length;
+    const parkingsLength = parkings.length;
 
     const parking: Parking = {
       ...data,
@@ -24,36 +21,41 @@ export class FakeParkingRepository implements IParkingRepository {
       updated: new Date()
     };
 
-    this.parkings.push(parking);
+    parkings.push(parking);
 
     return parking;
-  }
+  },
 
   async findById(id: number) {
-    const parking = this.parkings.find((parking) => parking.id === id);
+    const reservation = parkings.find((parking) => parking.id === id);
+    if (reservation) return reservation;
+
+    return ParkingRepositoryError.notFound();
+  },
+
+  async findByPlate(plate: string) {
+    const parking = parkings.find((parking) => parking.plate === plate);
 
     if (parking) return parking;
 
-    return RepositoryError.notFound();
-  }
+    return ParkingRepositoryError.notFound();
+  },
 
   async update(id: number, changes: Partial<Parking>) {
     let updadedReservation: Parking | undefined;
 
-    for (let parking of this.parkings) {
-      if (parking.id === id) {
+    parkings.forEach((reservation, i) => {
+      if (reservation.id === id) {
         updadedReservation = {
-          ...parking,
+          ...reservation,
           ...changes,
           updated: new Date()
         };
 
-        parking = updadedReservation;
-
-        return updadedReservation;
+        parkings[i] = updadedReservation;
       }
-    }
+    });
 
-    return RepositoryError.notFound();
+    return updadedReservation ? updadedReservation : ParkingRepositoryError.notFound();
   }
-}
+};

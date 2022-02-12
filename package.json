@@ -9,6 +9,7 @@
     "dev": "nodemon src/infra/server.ts",
     "lint": "eslint src/** --ext .ts --fix",
     "coverage:report": "src/test/coverage/index.html",
+    "pretest": "jest .src/application/repositories/mongodb/config/transaction.ts --passWithNoTests",
     "test:unit": "jest --passWithNoTests -c jest-unit.config.js",
     "test:integration": "jest --passWithNoTests -c jest-integration.config.js",
     "test:ci": "jest --passWithNoTests --coverage",

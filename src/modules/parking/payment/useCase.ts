@@ -1,19 +1,12 @@
-import { calculateDifference } from '../../../application/helpers/functions';
-
 import { Result } from '../../../application/domain/models';
 import { IParkingRepository } from '../../../application/domain/repositories';
-import { IUseCase } from '../../../application/interfaces';
+import { calculateDifference } from '../../../application/helpers/functions';
 import { PaymentDTO, PaymentId, PaymentResponse } from './dto';
 import { PaymentError } from './error';
-import { FakeParkingRepository } from '../../../application/repositories/fake/parking';
 
-export class PaymentUseCase implements IUseCase<PaymentDTO & PaymentId, PaymentResponse> {
-  constructor(private repository: IParkingRepository = new FakeParkingRepository()) {
-    /** */
-  }
-
-  async execute({ paid, id }: PaymentDTO & PaymentId): Promise<Result<PaymentResponse, PaymentError>> {
-    const reservationToUpdate = await this.repository.findById(id);
+export const paymentUseCase = (repository: IParkingRepository) => ({
+  execute: async ({ paid, id }: PaymentDTO & PaymentId): Promise<Result<PaymentResponse, PaymentError>> => {
+    const reservationToUpdate = await repository.findById(+id);
 
     if ('code' in reservationToUpdate) {
       return {
@@ -29,9 +22,9 @@ export class PaymentUseCase implements IUseCase<PaymentDTO & PaymentId, PaymentR
       };
     }
 
-    const time = calculateDifference(new Date(), reservationToUpdate.created);
+    const time = calculateDifference(reservationToUpdate.created, new Date());
 
-    const paidReservation = await this.repository.update(id, { paid, time });
+    const paidReservation = await repository.update(+id, { paid, time });
 
     if ('id' in paidReservation) {
       const { id, paid } = paidReservation;
@@ -47,4 +40,4 @@ export class PaymentUseCase implements IUseCase<PaymentDTO & PaymentId, PaymentR
       error: paidReservation
     };
   }
-}
+});

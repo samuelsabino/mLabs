@@ -1,20 +1,14 @@
 import { Request, Response } from 'express';
 
 import { IParkingRepository } from '../../../application/domain/repositories/parking';
-import { FakeParkingRepository } from '../../../application/repositories/fake/parking/repository';
 import { HistoryDTO } from './dto';
-import { HistoryUseCase } from './useCase';
+import { historyUseCase } from './useCase';
 
-export class HistoryController {
-  constructor(private repository: IParkingRepository = new FakeParkingRepository()) {
-    /** */
-  }
-
-  async handle(req: Request<HistoryDTO>, res: Response) {
-    const useCase = new HistoryUseCase(this.repository);
+export const historyController = (repository: IParkingRepository) => ({
+  handle: async (req: Request<HistoryDTO>, res: Response) => {
+    const useCase = historyUseCase(repository);
 
     const data = req.params;
-
     const result = await useCase.execute(data);
 
     if (result.success) {
@@ -23,4 +17,4 @@ export class HistoryController {
 
     throw result.error;
   }
-}
+});

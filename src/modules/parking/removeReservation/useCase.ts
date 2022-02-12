@@ -1,19 +1,12 @@
-import { FakeParkingRepository } from './../../../application/repositories/fake/parking/repository';
 import { Result } from '../../../application/domain/models';
 import { IParkingRepository } from '../../../application/domain/repositories';
 import { calculateDifference } from '../../../application/helpers/functions';
-import { IUseCase } from '../../../application/interfaces';
-
 import { RemoveReservationDTO, RemoveReservationResponse } from './dto';
 import { RemoveReservationError } from './error';
 
-export class RemoveReservationUseCase implements IUseCase<RemoveReservationDTO, RemoveReservationResponse> {
-  constructor(private repository: IParkingRepository = new FakeParkingRepository()) {
-    /** */
-  }
-
-  async execute(data: RemoveReservationDTO): Promise<Result<RemoveReservationResponse, RemoveReservationError>> {
-    const reservartion = await this.repository.findById(data.id);
+export const removeReservationUseCase = (repository: IParkingRepository) => ({
+  execute: async (data: RemoveReservationDTO): Promise<Result<RemoveReservationResponse, RemoveReservationError>> => {
+    const reservartion = await repository.findById(+data.id);
 
     if ('code' in reservartion) {
       return {
@@ -29,16 +22,23 @@ export class RemoveReservationUseCase implements IUseCase<RemoveReservationDTO, 
       };
     }
 
-    const time = calculateDifference(new Date(), reservartion.created);
+    if (!reservartion.paid) {
+      return {
+        success: false,
+        error: RemoveReservationError.paymentNotMade()
+      };
+    }
 
-    const paidReservation = await this.repository.update(data.id, { left: true, time });
+    const time = calculateDifference(reservartion.created, new Date());
+
+    const paidReservation = await repository.update(+data.id, { left: true, time });
 
     if ('id' in paidReservation) {
-      const { id, left } = paidReservation;
+      const { id, plate, left } = paidReservation;
 
       return {
         success: true,
-        data: { id, left }
+        data: { id, plate, left }
       };
     }
 
@@ -47,4 +47,4 @@ export class RemoveReservationUseCase implements IUseCase<RemoveReservationDTO, 
       error: paidReservation
     };
   }
-}
+});

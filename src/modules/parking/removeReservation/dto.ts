@@ -1,5 +1,5 @@
-import { Parking } from '../../../application/domain/models';
+import { AtNumberToString, Parking } from '../../../application/domain/models';
 
-export type RemoveReservationDTO = Pick<Parking, 'id'>;
+export type RemoveReservationDTO = AtNumberToString<Pick<Parking, 'id'>>;
 
-export type RemoveReservationResponse = Pick<Parking, 'id' | 'left'>;
+export type RemoveReservationResponse = Pick<Parking, 'id' | 'left' | 'plate'>;

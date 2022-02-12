@@ -1,17 +1,12 @@
 import { Request, Response } from 'express';
 
 import { IParkingRepository } from '../../../application/domain/repositories/parking';
-import { FakeParkingRepository } from '../../../application/repositories/fake/parking/repository';
 import { MakeReservationDTO } from './dto';
-import { MakeReservationUseCase } from './useCase';
+import { makeReservationUseCase } from './useCase';
 
-export class MakeReservationController {
-  constructor(private repository: IParkingRepository = new FakeParkingRepository()) {
-    /** */
-  }
-
-  async handle(req: Request<null, null, MakeReservationDTO>, res: Response) {
-    const useCase = new MakeReservationUseCase(this.repository);
+export const makeReservationController = (repository: IParkingRepository) => ({
+  handle: async (req: Request<null, null, MakeReservationDTO>, res: Response) => {
+    const useCase = makeReservationUseCase(repository);
     const data = req.body;
     const result = await useCase.execute(data);
 
@@ -21,4 +16,4 @@ export class MakeReservationController {
 
     throw result.error;
   }
-}
+});

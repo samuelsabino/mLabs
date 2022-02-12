@@ -1,17 +1,12 @@
 import { Request, Response } from 'express';
 
 import { IParkingRepository } from '../../../application/domain/repositories/parking';
-import { FakeParkingRepository } from '../../../application/repositories/fake/parking/repository';
 import { PaymentDTO, PaymentId } from './dto';
-import { PaymentUseCase } from './useCase';
+import { paymentUseCase } from './useCase';
 
-export class PaymentController {
-  constructor(private repository: IParkingRepository = new FakeParkingRepository()) {
-    /** */
-  }
-
-  async handle(req: Request<PaymentDTO, null, PaymentId>, res: Response) {
-    const useCase = new PaymentUseCase(this.repository);
+export const paymentController = (repository: IParkingRepository) => ({
+  handle: async (req: Request<PaymentDTO, null, PaymentId>, res: Response) => {
+    const useCase = paymentUseCase(repository);
 
     const data = { ...req.params, ...req.body };
 
@@ -23,4 +18,4 @@ export class PaymentController {
 
     throw result.error;
   }
-}
+});

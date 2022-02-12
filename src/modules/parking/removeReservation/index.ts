@@ -1,3 +1,4 @@
-import { RemoveReservationController } from './controller';
+import { fakeParkingRepository } from '../../../application/repositories/fake/parking/repository';
+import { removeReservationController } from './controller';
 
-export const controller = new RemoveReservationController();
+export const controller = removeReservationController(fakeParkingRepository);

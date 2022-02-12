@@ -1,3 +1,4 @@
-import { HistoryController } from './controller';
+import { fakeParkingRepository } from '../../../application/repositories/fake/parking/repository';
+import { historyController } from './controller';
 
-export const controller = new HistoryController();
+export const controller = historyController(fakeParkingRepository);

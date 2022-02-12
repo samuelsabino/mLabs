@@ -1,3 +1,4 @@
-import { MakeReservationController } from './controller';
+import { makeReservationController } from './controller';
+import { fakeParkingRepository } from '../../../application/repositories/fake/parking/repository';
 
-export const controller = new MakeReservationController();
+export const controller = makeReservationController(fakeParkingRepository);

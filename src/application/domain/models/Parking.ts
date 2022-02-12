@@ -4,6 +4,6 @@ export interface Parking {
   time: string;
   paid: boolean;
   left: boolean;
-  created: Date;
-  updated: Date;
+  created?: Date;
+  updated?: Date;
 }

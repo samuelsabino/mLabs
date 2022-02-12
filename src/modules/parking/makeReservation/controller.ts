@@ -1,20 +1,18 @@
 import { Request, Response } from 'express';
 
-import { FakeParkingRepository } from '../../../application/repositories/fake/parking';
+import { IParkingRepository } from '../../../application/domain/repositories/parking';
+import { FakeParkingRepository } from '../../../application/repositories/fake/parking/repository';
 import { MakeReservationDTO } from './dto';
 import { MakeReservationUseCase } from './useCase';
 
 export class MakeReservationController {
-  constructor(/*private useCase: IUseCase<MakeReservationDTO, MakeReservationResponse, MakeReservationError>*/) {
+  constructor(private repository: IParkingRepository = new FakeParkingRepository()) {
     /** */
   }
 
-  async handle(req: Request<MakeReservationDTO>, res: Response) {
-    const repository = new FakeParkingRepository();
-    const useCase = new MakeReservationUseCase(repository);
-
-    const data = req.params;
-
+  async handle(req: Request<null, null, MakeReservationDTO>, res: Response) {
+    const useCase = new MakeReservationUseCase(this.repository);
+    const data = req.body;
     const result = await useCase.execute(data);
 
     if (result.success) {

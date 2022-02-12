@@ -1,17 +1,17 @@
 import { Request, Response } from 'express';
 
-import { FakeParkingRepository } from '../../../application/repositories/fake/parking';
+import { IParkingRepository } from '../../../application/domain/repositories/parking';
+import { FakeParkingRepository } from '../../../application/repositories/fake/parking/repository';
 import { HistoryDTO } from './dto';
 import { HistoryUseCase } from './useCase';
 
 export class HistoryController {
-  constructor(/*private useCase: IUseCase<HistoryDTO, HistoryResponse, HistoryError>*/) {
+  constructor(private repository: IParkingRepository = new FakeParkingRepository()) {
     /** */
   }
 
   async handle(req: Request<HistoryDTO>, res: Response) {
-    const repository = new FakeParkingRepository();
-    const useCase = new HistoryUseCase(repository);
+    const useCase = new HistoryUseCase(this.repository);
 
     const data = req.params;
 

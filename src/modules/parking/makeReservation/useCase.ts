@@ -1,42 +1,22 @@
-import { IParkingRepository } from '../../../application/domain/repositories/parking';
-
+import { FakeParkingRepository } from '../../../application/repositories/fake/parking';
 import { Result } from '../../../application/domain/models/Result';
+import { IParkingRepository } from '../../../application/domain/repositories/parking';
 import { IUseCase } from '../../../application/interfaces/useCase';
 import { MakeReservationDTO, MakeReservationResponse } from './dto';
 import { MakeReservationError } from './error';
 
 export class MakeReservationUseCase implements IUseCase<MakeReservationDTO, MakeReservationResponse> {
-  // private fields = ['plate'];
-
-  constructor(private repository: IParkingRepository) {
+  constructor(private repository: IParkingRepository = new FakeParkingRepository()) {
     /** */
   }
-  // public getMissingParams<T>(data: T, requiredParams: string[]): string {
-  //   const missingParams: string[] = [];
-
-  //   if (!data) return requiredParams.join(', ');
-
-  //   requiredParams.forEach((name) => {
-  //     if (!Object.keys(data).includes(name)) {
-  //       missingParams.push(name);
-  //     }
-  //   });
-  //   return missingParams.join(', ');
-  // }
 
   async execute(dto: MakeReservationDTO): Promise<Result<MakeReservationResponse, MakeReservationError>> {
-    // const missingParams = this.getMissingParams(dto, this.fields);
-
-    // if (missingParams) {
-    //   return {
-    //     success: false,
-    //     error: MakeReservationError.missingParams(missingParams)
-    //   };
-    // }
-
     const regex = /^[a-zA-Z]{3}-[0-9]{4}$/;
     const validatedPlate = regex.test(dto.plate);
 
+    console.log(dto);
+    console.log(regex);
+    console.log(validatedPlate);
     if (!validatedPlate) {
       return {
         success: false,

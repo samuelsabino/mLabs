@@ -1,3 +1,4 @@
+import { FakeParkingRepository } from './../../../application/repositories/fake/parking/repository';
 import { Result } from '../../../application/domain/models';
 import { IParkingRepository } from '../../../application/domain/repositories';
 import { calculateDifference } from '../../../application/helpers/functions';
@@ -7,7 +8,7 @@ import { RemoveReservationDTO, RemoveReservationResponse } from './dto';
 import { RemoveReservationError } from './error';
 
 export class RemoveReservationUseCase implements IUseCase<RemoveReservationDTO, RemoveReservationResponse> {
-  constructor(private repository: IParkingRepository) {
+  constructor(private repository: IParkingRepository = new FakeParkingRepository()) {
     /** */
   }
 

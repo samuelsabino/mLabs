@@ -1,16 +1,17 @@
 import { Request, Response } from 'express';
 
-import { MongodbParkingRepository } from '../../../application/repositories/mongodb/parking';
+import { IParkingRepository } from '../../../application/domain/repositories/parking';
+import { FakeParkingRepository } from '../../../application/repositories/fake/parking/repository';
 import { PaymentDTO, PaymentId } from './dto';
 import { PaymentUseCase } from './useCase';
 
 export class PaymentController {
-  constructor(/*private useCase: IUseCase<PaymentDTO & PaymentId, PaymentResponse, PaymentError>*/) {
+  constructor(private repository: IParkingRepository = new FakeParkingRepository()) {
     /** */
   }
+
   async handle(req: Request<PaymentDTO, null, PaymentId>, res: Response) {
-    const repository = new MongodbParkingRepository();
-    const useCase = new PaymentUseCase(repository);
+    const useCase = new PaymentUseCase(this.repository);
 
     const data = { ...req.params, ...req.body };
 

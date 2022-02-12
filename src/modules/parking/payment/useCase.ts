@@ -5,9 +5,10 @@ import { IParkingRepository } from '../../../application/domain/repositories';
 import { IUseCase } from '../../../application/interfaces';
 import { PaymentDTO, PaymentId, PaymentResponse } from './dto';
 import { PaymentError } from './error';
+import { FakeParkingRepository } from '../../../application/repositories/fake/parking';
 
 export class PaymentUseCase implements IUseCase<PaymentDTO & PaymentId, PaymentResponse> {
-  constructor(private repository: IParkingRepository) {
+  constructor(private repository: IParkingRepository = new FakeParkingRepository()) {
     /** */
   }
 

@@ -1,17 +1,17 @@
-import { MongodbParkingRepository } from '../../../application/repositories/mongodb/parking';
 import { Request, Response } from 'express';
 
+import { IParkingRepository } from '../../../application/domain/repositories/parking';
+import { FakeParkingRepository } from '../../../application/repositories/fake/parking/repository';
 import { RemoveReservationDTO } from './dto';
 import { RemoveReservationUseCase } from './useCase';
 
 export class RemoveReservationController {
-  constructor(/*private useCase: IUseCase<RemoveReservationDTO, RemoveReservationResponse, RemoveReservationError>*/) {
+  constructor(private repository: IParkingRepository = new FakeParkingRepository()) {
     /** */
   }
 
   async handle(req: Request<RemoveReservationDTO>, res: Response) {
-    const repository = new MongodbParkingRepository();
-    const useCase = new RemoveReservationUseCase(repository);
+    const useCase = new RemoveReservationUseCase(this.repository);
 
     const data = req.params;
 

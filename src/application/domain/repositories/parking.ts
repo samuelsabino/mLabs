@@ -1,11 +1,15 @@
-import { RepositoryError } from '../../../application/errors/repositories';
-
-import { Parking } from '../models';
+import { ParkingRepositoryError } from '../../../application/errors/repositories';
+import { AtNumberToString, Parking } from '../models';
 
 export interface IParkingRepository {
-  create(data: Pick<Parking, 'plate'>): Promise<Parking | RepositoryError>;
+  create(data: Pick<Parking, 'plate'>): Promise<Parking | ParkingRepositoryError>;
 
-  findById(id: Exclude<Parking['id'], Parking>): Promise<Parking | RepositoryError>;
+  findById(id: Exclude<Parking['id'], Parking>): Promise<Parking | ParkingRepositoryError>;
 
-  update(id: Exclude<Parking['id'], Parking>, changes: Partial<Parking>): Promise<Parking | RepositoryError>;
+  findByPlate(id: AtNumberToString<Exclude<Parking['plate'], Parking>>): Promise<Parking | ParkingRepositoryError>;
+
+  update(
+    id: AtNumberToString<Exclude<Parking['id'], Parking>>,
+    changes: Partial<Parking>
+  ): Promise<Parking | ParkingRepositoryError>;
 }

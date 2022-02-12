@@ -1,13 +1,13 @@
-import { RepositoryError } from '../../../application/errors/repositories/parking';
-import { FakeParkingRepository } from '../../../application/repositories/fake/parking/repository';
+import { ParkingRepositoryError } from '../../../application/errors/repositories/parking';
+import { fakeParkingRepository } from '../../../application/repositories/fake/parking/repository';
 import { MakeReservationError } from '../../../modules/parking/makeReservation/error';
-import { MakeReservationUseCase } from '../../../modules/parking/makeReservation/useCase';
+import { makeReservationUseCase } from '../../../modules/parking/makeReservation/useCase';
 import { ParkingBuilder } from '../../builders/parking';
 
 describe('makeReservationUseCase', () => {
   test('Quando eu efetuo uma reserva com sucesso.', async () => {
-    const repository = new FakeParkingRepository();
-    const useCase = new MakeReservationUseCase(repository);
+    const repository = fakeParkingRepository;
+    const useCase = makeReservationUseCase(repository);
 
     const reservation = ParkingBuilder.aReservation().getReservation();
 
@@ -17,8 +17,8 @@ describe('makeReservationUseCase', () => {
   });
 
   test('[ERRO] Quando eu efetuo uma reserva com uma placa inválida.', async () => {
-    const repository = new FakeParkingRepository();
-    const useCase = new MakeReservationUseCase(repository);
+    const repository = fakeParkingRepository;
+    const useCase = makeReservationUseCase(repository);
 
     const reservation = ParkingBuilder.aReservation().withInvalidPlate();
 
@@ -31,8 +31,8 @@ describe('makeReservationUseCase', () => {
   });
 
   test('[ERRO] Quando eu efetuo uma reserva de uma placa já existente.', async () => {
-    const repository = new FakeParkingRepository();
-    const useCase = new MakeReservationUseCase(repository);
+    const repository = fakeParkingRepository;
+    const useCase = makeReservationUseCase(repository);
     const reservation = ParkingBuilder.aReservation().getReservation();
 
     await repository.create(reservation);
@@ -42,7 +42,7 @@ describe('makeReservationUseCase', () => {
     expect(result.success).toEqual(false);
 
     if (!result.success) {
-      expect(result.error.message).toEqual(RepositoryError.alreadyExists().message);
+      expect(result.error.message).toEqual(ParkingRepositoryError.alreadyExists().message);
     }
   });
 });

@@ -1,11 +1,12 @@
 import 'express-async-errors';
 
-import { env } from '../config/envs';
 import app from './config/app';
+import { databaseConnection } from './config/database';
+import { env } from './config/envs';
 
-const startServer = () => {
-  console.log('database connected');
-  app.listen(env.PORT, () => {
+const startServer = async () => {
+  app.listen(env.PORT, async () => {
+    await databaseConnection.connect();
     console.log('Server running at ' + env.PORT);
   });
 };

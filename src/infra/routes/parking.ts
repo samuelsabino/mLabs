@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import * as useCases from '../../modules/parking';
+import * as useCases from '../../application/modules/parking';
 
 export const parkingRouter = (router: Router) => {
   router.post('/', useCases.makeReservation.controller.handle);

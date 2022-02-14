@@ -1,6 +1,6 @@
-import { ApplicationError } from '../../application/errors';
 import express, { NextFunction, Request, Response } from 'express';
 
+import { ApplicationError } from '../../application/errors';
 import { configRoute } from './route';
 
 const app = express();
@@ -13,9 +13,7 @@ app.use((err: Error, _request: Request, response: Response, _: NextFunction) => 
     return response.status(err.code).json({ message: err.message });
   }
 
-  console.log(err);
-
-  return response.status(500).json({ message: 'Erro interno do servidor.' });
+  return response.status(500).json({ message: 'Internal Server Error.' });
 });
 
 export default app;

@@ -5,5 +5,6 @@ dotenv.config();
 
 export const env = envsafe({
   PORT: port(),
-  MONGO_URL: str()
+  MONGO_URL: str(),
+  DB_NAME: str()
 });

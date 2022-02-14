@@ -1,6 +1,6 @@
-import { Parking } from '../../../../application/domain/models';
-import { IParkingRepository } from '../../../../application/domain/repositories';
-import { ParkingRepositoryError } from '../../../../application/errors/repositories';
+import { Parking } from '../../../domain/models';
+import { IParkingRepository } from '../../../domain/repositories';
+import { ParkingRepositoryError } from '../../../errors/repositories';
 
 const parkings: Parking[] = [];
 
@@ -17,8 +17,7 @@ export const fakeParkingRepository: IParkingRepository = {
       time: '0',
       paid: false,
       left: false,
-      created: new Date(),
-      updated: new Date()
+      created: new Date()
     };
 
     parkings.push(parking);
@@ -48,14 +47,13 @@ export const fakeParkingRepository: IParkingRepository = {
       if (reservation.id === id) {
         updadedReservation = {
           ...reservation,
-          ...changes,
-          updated: new Date()
+          ...changes
         };
 
         parkings[i] = updadedReservation;
       }
     });
 
-    return updadedReservation ? updadedReservation : ParkingRepositoryError.notFound();
+    return updadedReservation || ParkingRepositoryError.notFound();
   }
 };

@@ -8,11 +8,11 @@
   "scripts": {
     "dev": "nodemon src/infra/server.ts",
     "lint": "eslint src/** --ext .ts --fix",
-    "coverage:report": "src/test/coverage/index.html",
-    "pretest": "jest .src/application/repositories/mongodb/config/transaction.ts --passWithNoTests",
+    "coverage:report": "test/coverage/index.html",
+    "pretest": "jest .src/infra/helpers/connection/transaction.ts --passWithNoTests",
     "test:unit": "jest --passWithNoTests -c jest-unit.config.js",
     "test:integration": "jest --passWithNoTests -c jest-integration.config.js",
-    "test:ci": "jest --passWithNoTests --coverage",
+    "test:ci": "jest --passWithNoTests",
     "docker:run": "docker-compose -f docker-compose.yml up --build",
     "docker:attach": "docker exec -it BACKEND-SERVER bash"
   },
@@ -28,6 +28,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^26.1.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^5.2.0",
@@ -41,6 +42,7 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
+    "celebrate": "^15.0.1",
     "dotenv": "^16.0.0",
     "envsafe": "^2.0.3",
     "express": "^4.17.2",

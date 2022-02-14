@@ -33,10 +33,15 @@
     "noUnusedParameters": true /* Report errors on unused parameters. */,
     "noUncheckedIndexedAccess": true /* Include 'undefined' in index signature results */,
     "noImplicitOverride": true /* Ensure overriding members in derived classes are marked with an 'override' modifier. */,
-    "noPropertyAccessFromIndexSignature": true /* Require undeclared properties from index signatures to use element accesses. */
+    "noPropertyAccessFromIndexSignature": true, /* Require undeclared properties from index signatures to use element accesses. */
+    "types": [
+      "jest",
+      "node"
+    ]
   },
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "test"
   ]
 }

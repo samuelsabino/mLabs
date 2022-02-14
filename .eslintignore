@@ -1,4 +1,4 @@
 /node_modules
 readme.md
 dist
-src/test/coverage
+test/coverage

@@ -1,5 +1,6 @@
 /node_modules
 .env
-/dist
-src/test/coverage
+dist
+test/coverage
 data
+.vscode

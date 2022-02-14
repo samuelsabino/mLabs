@@ -1,5 +1,5 @@
-import { Result } from '../../../application/domain/models';
-import { IParkingRepository } from '../../../application/domain/repositories';
+import { Result } from '../../../domain/models';
+import { IParkingRepository } from '../../../domain/repositories';
 import { HistoryDTO, HistoryResponse } from './dto';
 import { HistoryError } from './error';
 
@@ -8,9 +8,10 @@ export const historyUseCase = (repository: IParkingRepository) => ({
     const reservartion = await repository.findByPlate(data.plate);
 
     if ('id' in reservartion) {
+      const { id, plate, time, left, paid } = reservartion;
       return {
         success: true,
-        data: reservartion
+        data: { id, plate, time, left, paid }
       };
     }
 

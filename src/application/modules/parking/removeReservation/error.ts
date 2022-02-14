@@ -1,4 +1,4 @@
-import { ApplicationError } from '../../../application/errors/application';
+import { ApplicationError } from '../../../errors/application';
 
 export class RemoveReservationError extends ApplicationError {
   static alreadyLeft() {

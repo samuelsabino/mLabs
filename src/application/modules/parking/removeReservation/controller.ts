@@ -1,6 +1,6 @@
+import { IParkingRepository } from '../../../domain/repositories';
 import { Request, Response } from 'express';
 
-import { IParkingRepository } from '../../../application/domain/repositories/parking';
 import { RemoveReservationDTO } from './dto';
 import { removeReservationUseCase } from './useCase';
 

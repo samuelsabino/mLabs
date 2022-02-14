@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 
-import { IParkingRepository } from '../../../application/domain/repositories/parking';
-import { PaymentDTO, PaymentId } from './dto';
+import { IParkingRepository } from '../../../domain/repositories/parking';
+import { PaymentDTO } from './dto';
 import { paymentUseCase } from './useCase';
 
 export const paymentController = (repository: IParkingRepository) => ({
-  handle: async (req: Request<PaymentDTO, null, PaymentId>, res: Response) => {
+  handle: async (req: Request<PaymentDTO>, res: Response) => {
     const useCase = paymentUseCase(repository);
 
-    const data = { ...req.params, ...req.body };
+    const data = { ...req.params };
 
     const result = await useCase.execute(data);
 

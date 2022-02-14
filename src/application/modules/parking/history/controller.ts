@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { IParkingRepository } from '../../../application/domain/repositories/parking';
+import { IParkingRepository } from '../../../domain/repositories/parking';
 import { HistoryDTO } from './dto';
 import { historyUseCase } from './useCase';
 

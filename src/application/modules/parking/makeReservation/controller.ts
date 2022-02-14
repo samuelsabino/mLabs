@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 
-import { IParkingRepository } from '../../../application/domain/repositories/parking';
+import { IParkingRepository } from '../../../domain/repositories/parking';
 import { MakeReservationDTO } from './dto';
 import { makeReservationUseCase } from './useCase';
 
 export const makeReservationController = (repository: IParkingRepository) => ({
-  handle: async (req: Request<null, null, MakeReservationDTO>, res: Response) => {
+  handle: async (req: Request<unknown, unknown, MakeReservationDTO>, res: Response) => {
     const useCase = makeReservationUseCase(repository);
     const data = req.body;
     const result = await useCase.execute(data);

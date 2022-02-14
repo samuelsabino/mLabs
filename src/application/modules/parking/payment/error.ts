@@ -1,4 +1,4 @@
-import { ApplicationError } from '../../../application/errors';
+import { ApplicationError } from '../../../errors';
 
 export class PaymentError extends ApplicationError {
   static paymentAlreadyMade() {

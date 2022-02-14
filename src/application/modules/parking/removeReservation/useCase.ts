@@ -1,6 +1,6 @@
-import { Result } from '../../../application/domain/models';
-import { IParkingRepository } from '../../../application/domain/repositories';
-import { calculateDifference } from '../../../application/helpers/functions';
+import { Result } from '../../../domain/models';
+import { IParkingRepository } from '../../../domain/repositories';
+import { calculateDifference } from '../../../helpers/functions';
 import { RemoveReservationDTO, RemoveReservationResponse } from './dto';
 import { RemoveReservationError } from './error';
 
@@ -34,11 +34,11 @@ export const removeReservationUseCase = (repository: IParkingRepository) => ({
     const paidReservation = await repository.update(+data.id, { left: true, time });
 
     if ('id' in paidReservation) {
-      const { id, plate, left } = paidReservation;
+      const { id, plate, time, left } = paidReservation;
 
       return {
         success: true,
-        data: { id, plate, left }
+        data: { id, plate, time, left }
       };
     }
 

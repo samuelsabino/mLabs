@@ -1,5 +1,5 @@
-import { Result } from '../../../application/domain/models/Result';
-import { IParkingRepository } from '../../../application/domain/repositories/parking';
+import { Result } from '../../../domain/models/Result';
+import { IParkingRepository } from '../../../domain/repositories/parking';
 import { MakeReservationDTO, MakeReservationResponse } from './dto';
 import { MakeReservationError } from './error';
 
@@ -18,11 +18,10 @@ export const makeReservationUseCase = (repository: IParkingRepository) => ({
     const reservationCreated = await repository.create(dto);
 
     if ('id' in reservationCreated) {
-      // const { id } = reservationCreated;
-
+      const { id, plate, time } = reservationCreated;
       return {
         success: true,
-        data: reservationCreated
+        data: { id, plate, time }
       };
     }
 

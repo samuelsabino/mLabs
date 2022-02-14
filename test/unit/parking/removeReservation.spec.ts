@@ -1,9 +1,9 @@
-import { Parking } from '../../../application/domain/models/Parking';
-import { ParkingRepositoryError } from '../../../application/errors/repositories';
-import { fakeParkingRepository } from '../../../application/repositories/fake/parking/repository';
-import { RemoveReservationError } from '../../../modules/parking/removeReservation/error';
-import { removeReservationUseCase } from '../../../modules/parking/removeReservation/useCase';
-import { ParkingBuilder } from '../../builders/parking';
+import { Parking } from '../../../src/application/domain/models';
+import { ParkingRepositoryError } from '../../../src/application/errors/repositories';
+import { RemoveReservationError } from '../../../src/application/modules/parking/removeReservation/error';
+import { removeReservationUseCase } from '../../../src/application/modules/parking/removeReservation/useCase';
+import { fakeParkingRepository } from '../../../src/application/repositories/fake/parking';
+import { ParkingBuilder } from '../../../src/infra/helpers/builders/parking';
 
 describe('removeReservationUseCase', () => {
   test('Quando eu efetuo a retirada de uma reserva com sucesso.', async () => {
@@ -20,7 +20,7 @@ describe('removeReservationUseCase', () => {
     const result = await useCase.execute({ id: stringId });
 
     expect(result.success).toEqual(true);
-  });
+  }, 5000);
 
   test('[ERRO] Quando eu efetuo a retirada de uma reserva não existente.', async () => {
     const repository = fakeParkingRepository;
@@ -33,7 +33,7 @@ describe('removeReservationUseCase', () => {
     if (!result.success) {
       expect(result.error.message).toEqual(ParkingRepositoryError.notFound().message);
     }
-  });
+  }, 5000);
 
   test('[ERRO] Quando eu efetuo a retirada de uma reserva que já foi retirada.', async () => {
     const repository = fakeParkingRepository;
@@ -51,7 +51,7 @@ describe('removeReservationUseCase', () => {
       expect(result.success).toEqual(false);
       expect(result.error.message).toEqual(RemoveReservationError.alreadyLeft().message);
     }
-  });
+  }, 5000);
 
   test('[ERRO] Quando eu efetuo a retirada de uma reserva que não foi paga.', async () => {
     const repository = fakeParkingRepository;
@@ -68,5 +68,5 @@ describe('removeReservationUseCase', () => {
       expect(result.success).toEqual(false);
       expect(result.error.message).toEqual(RemoveReservationError.paymentNotMade().message);
     }
-  });
+  }, 5000);
 });
